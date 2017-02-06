@@ -50,6 +50,8 @@ const (
 
 	QueryPath     = "/api/query"
 	QueryLastPath = "/api/query/last"
+	QueryGexpPath = "/api/query/gexp"
+
 	// The three keys in the rateOption parameter of the QueryParam
 	QueryRateOptionCounter    = "counter"    // The corresponding value type is bool
 	QueryRateOptionCounterMax = "counterMax" // The corresponding value type is int,int64
@@ -60,6 +62,7 @@ const (
 	SerializersPath = "/api/serializers"
 	StatsPath       = "/api/stats"
 	SuggestPath     = "/api/suggest"
+
 	// Only the one of the three query type can be used in SuggestParam, UIDMetaData:
 	TypeMetrics = "metrics"
 	TypeTagk    = "tagk"
@@ -138,6 +141,8 @@ type Client interface {
 	// status code and response info. Otherwise, an error instance will be returned, when the given parameter
 	// is invalid, it failed to parese the response, or OpenTSDB is un-connectable right now.
 	QueryLast(param QueryLastParam) (*QueryLastResponse, error)
+
+	QueryGexp(param QueryGexpParam) (*QueryResponse, error)
 
 	// Aggregators is the implementation of 'GET /api/aggregators' endpoint.
 	// It simply lists the names of implemented aggregation functions used in timeseries queries.
