@@ -1,5 +1,11 @@
 package client
 
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+)
+
 type QueryGexpParam struct {
 
 	// The start time for the query. This can be a relative or absolute timestamp.
@@ -16,7 +22,7 @@ type QueryGexpParam struct {
 	Exp string `json:"exp"`
 }
 
-func (quey *QueryGexpParam) String() string {
+func (query *QueryGexpParam) String() string {
 
 	buffer := bytes.NewBuffer(nil)
 	content, _ := json.Marshal(query)
@@ -24,13 +30,12 @@ func (quey *QueryGexpParam) String() string {
 	return buffer.String()
 }
 
-func (client *clientImpl) QueryGexp(param QueryGexpParam) (*QueryResponse, error) {
+func (c *clientImpl) QueryGexp(param QueryGexpParam) (*QueryResponse, error) {
 
 	queryEndpoint := fmt.Sprintf("%s%s?start=%s&exp=%s", c.tsdbEndpoint, QueryGexpPath, param.Start, param.Exp)
-	queryResp = QueryResponse{}
+	queryResp := QueryResponse{}
 
-	queryResp := QueryLastResponse{}
-	if err = c.sendRequest(GetMethod, queryEndpoint, "", &queryResp); err != nil {
+	if err := c.sendRequest(GetMethod, queryEndpoint, "", &queryResp); err != nil {
 		return nil, err
 	}
 	return &queryResp, nil
